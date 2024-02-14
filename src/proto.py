@@ -100,7 +100,7 @@ class Eternity2:
     print("solve: end of time")
 
 if __name__ == "__main__":
-  e2 = Eternity2(12, 16)
+  e2 = Eternity2(10, 12)
   e2.init_grid()
   e2.shuffle()
   e2.solve()
