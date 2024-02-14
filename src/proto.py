@@ -72,8 +72,7 @@ class Eternity2:
             return False
         return True
       if self.board[i][j] is None:
-        t = 0
-        while t in range(len(self.tiles)):
+        for t in range(len(self.tiles)):
           if self.tiles[t] is not None:
             if test_tile(t, i, j):
               self.board[i][j] = self.tiles[t]
@@ -86,7 +85,6 @@ class Eternity2:
                 print("solve_backtrack: found solution\n" + str(self))
               self.tiles[t] = self.board[i][j]
               self.board[i][j] = None
-          t += 1
       else:
         if i < self.size - 1:
           solve_backtrack(i + 1, j)
