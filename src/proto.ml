@@ -1,111 +1,47 @@
-Random.self_init ();;
-
-type edge =  
-  | Top
-  | Bottom
-  | Left
-  | Right;;
-
-type color = 
-  | White 
-  | Red 
-  | Green 
-  | Yellow 
-  | Blue 
-  | Pink 
-  | Gray 
-  | Brown 
-  | Orange 
-  | Purple
-  | Top
-  | Bottom
-  | Left
-  | Right 
-  | Black 
-;; 
-
-
-type piece = { 
+type tile = {
   id: int;
-  top: color;   
-  bottom: color;
-  left: color;
-  right: color;
+  top: int;
+  right: int;
+  bottom: int;
+  left: int;
 }
 
-type neighbor = E of edge | P of piece;; 
+type board = tile array array
 
-type board = {
-  piece: piece;
-  top: neighbor;
-  bottom: neighbor;
-  left: neighbor;
-  right: neighbor;
-}
+let create_tile id top right bottom left =
+  { id; top; right; bottom; left };
 
-let rotate_piece_left p:piece =
-  {
-    id = p.id; 
-    top = p.right; 
-    bottom = p.left; 
-    left = p.bottom; 
-    right = p.top;
-  };;
-  
-let rotate_piece_right p:piece =
-  {
-    id = p.id; 
-    top = p.left; 
-    bottom = p.right; 
-    left = p.top; 
-    right = p.bottom;
-  };;
-  
-let rotate_piece_180 p:piece = 
-  {
-    id = p.id; 
-    top = p.bottom; 
-    bottom = p.top; 
-    left = p.right; 
-    right = p.left;
-  };;
+let create_board width height =
+  Array.make_matrix width height (create_tile 0 0 0 0 0)
 
-let random_color () =
-  match Random.int 15 with
-  | 0 -> White
-  | 1 -> Red
-  | 2 -> Green
-  | 3 -> Yellow
-  | 4 -> Blue
-  | 5 -> Pink
-  | 6 -> Gray
-  | 7 -> Brown
-  | 8 -> Orange
-  | 9 -> Purple
-  | 10 -> Top
-  | 11 -> Bottom
-  | 12 -> Left
-  | 13 -> Right
-  | _ -> Black
+let print_board board =
+  Printf.printf "+";
+  Array.iter (fun row ->
+    Array.iter (fun tile ->
+      Printf.printf "----------+";
+    ) row;
+    Printf.printf "\n|";
+    Array.iter (fun tile ->
+      Printf.printf "    %d    |" tile.top;
+    ) row;
+    Printf.printf "\n|";
+    Array.iter (fun tile ->
+      Printf.printf "%d   %d   %d|" tile.left tile.id tile.right;
+    ) row;
+    Printf.printf "\n|";
+    Array.iter (fun tile ->
+      Printf.printf "    %d    |" tile.bottom;
+    ) row;
+    Printf.printf "\n";
+  ) board;
+  Printf.printf "+";
+  Array.iter (fun _ ->
+    Printf.printf "----------+";
+  ) board.(0);
 
-let create_random_piece (id) = 
-  {
-    id = id; 
-    top = random_color(); 
-    bottom = random_color(); 
-    left = random_color(); 
-    right = random_color();
-  }  
-;;
+let main () =
+  let size = 3 in
+  let board = create_board size in
+  print_board board;
 
-let create_random_board (size) = 0 ;;
-
-
-
-
-
-
-
-
-
-
+let () = main ()
