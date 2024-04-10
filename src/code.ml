@@ -115,7 +115,21 @@ let b = init_board size;;
 
 print_board b ();;
 
+let shuffle_board board =
+  for i = 0 to size - 1 do
+    for j = 0 to size - 1 do
+      let random_i = Random.int size in
+      let random_j = Random.int size in
+      let temp_tile = board.(i).(j) in
+      board.(i).(j) <- board.(random_i).(random_j);
+      board.(random_i).(random_j) <- temp_tile;
+    done;
+  done;
+  board;;
 
+let b = shuffle_board b;;
+
+print_board b ();;
 
 
 
