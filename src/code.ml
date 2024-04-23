@@ -1,6 +1,7 @@
 Random.self_init ();;
 
 let size = 5 ;;
+let nbColor = 12 ;;
 
 type tile = {
   id: int;
@@ -8,6 +9,7 @@ type tile = {
   right: int;
   bottom: int;
   left: int;
+  flag: bool;
 } ;;
 
 let rotate_tile_left t:tile =
@@ -17,6 +19,7 @@ let rotate_tile_left t:tile =
     top = t.right;
     bottom = t.left;
     left = t.bottom;
+    flag= t.flag;
   } ;;
 
 let rotate_tile_right t:tile =
@@ -26,6 +29,7 @@ let rotate_tile_right t:tile =
     bottom = t.right;
     left = t.top;
     right = t.bottom;
+    flag= t.flag;
   } ;;
 
 let rotate_tile_180 t:tile =
@@ -35,24 +39,26 @@ let rotate_tile_180 t:tile =
     bottom = t.top;
     left = t.right;
     right = t.left;
+    flag= t.flag;
   } ;; 
 
 let create_random_tile () tile =
   {
     id=0;
-    top = Random.int 11;
-    bottom = Random.int 11;
-    left = Random.int 11;
-    right = Random.int 11;
+    top = Random.int nbColor;
+    bottom = Random.int nbColor;
+    left = Random.int nbColor;
+    right = Random.int nbColor;
+    flag= true;
   } ;; 
 
 
 let create_board size =
   Array.init size (fun _ ->
-    Array.init size (fun _ ->
-      { id=0; top=0; right=0; left=0; bottom=0 }
-    )
-  ) ;; 
+      Array.init size (fun _ ->
+          { id=(-1); top=0; right=0; left=0; bottom=0; flag=true}
+        )
+    ) ;; 
 
 let init_board size =
   let board = create_board size in
@@ -62,10 +68,11 @@ let init_board size =
         board.(i).(j) <-
           {
             top = if i = 0 then 0 else board.(i-1).(j).bottom;
-            bottom = if i = size-1 then 0 else Random.int 11 + 1;
+            bottom = if i = size-1 then 0 else Random.int nbColor + 1;
             left = if j = 0 then 0 else board.(i).(j - 1).right;
-            right = if j = size - 1 then 0 else Random.int 11 + 1;
+            right = if j = size - 1 then 0 else Random.int nbColor + 1;
             id = i*size+j; 
+            flag=true;
           };
       done
     else 
@@ -73,10 +80,11 @@ let init_board size =
         board.(i).(j) <-
           {
             top = board.(i-1).(j).bottom;
-            bottom = if i = size-1 then 0 else Random.int 11 + 1;
-            left = if j = 0 then 0 else Random.int 11 + 1;
+            bottom = if i = size-1 then 0 else Random.int nbColor + 1;
+            left = if j = 0 then 0 else Random.int nbColor + 1;
             right = if j = size - 1 then 0 else board.(i).(j + 1).left;
             id = i*size+j; 
+            flag=true;
           };
       done;
   done; 
@@ -120,7 +128,61 @@ let shuffle_board board =
   done;
   board ;;
 
+let init_tiles board=
+  let tiles = Array.make (size*size) ({ id=(-1); top=0; right=0; left=0; bottom=0; flag=true}) in
+  for i = 0 to size - 1 do
+    for j = 0 to size - 1 do
+      tiles.((i)*size+j) <- board.(i).(j);
+    done;
+  done;
+  tiles ;; 
 
+let rec solve_backtrack board tiles i j =
+  
+  let test_tile t i j =
+    let res = ref true in
+    if j != 0 && board.(i).(j - 1).bottom != tiles.(t).top then
+      res := false;
+    if i = size - 1 && board.(0).(j).left != tiles.(t).right then
+      res := false;
+    if j = size - 1 && board.(i).(0).top != tiles.(t).bottom then 
+      res := false;
+    if i != 0 && board.(i - 1).(j).right != tiles.(t).left then
+      res := false; 
+    if i=0 && board.(i).(j).top != 0 then
+      res := false;
+    if i= size -1 && board.(i).(j).bottom != 0 then
+      res := false;
+    if j=0 && board.(i).(j).left != 0 then
+      res := false;
+    if j=size-1 && board.(i).(j).right != 0 then
+      res := false;
+    !res; 
+  in
+  
+  if board.(i).(j) = { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true} then
+    for t = 0 to (Array.length tiles) -1 do
+      if tiles.(t) != { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true } && tiles.(t).flag then
+        if test_tile t i j then begin
+          board.(i).(j) <- tiles.(t);
+          tiles.(t) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true };
+          if i < size - 1 then
+            solve_backtrack board tiles (i + 1) j
+          else if j < size - 1 then
+            solve_backtrack board tiles 0 (j + 1)
+          else
+            print_board board;
+          tiles.(t) <- board.(i).(j);
+          tiles.(t).flag=false;   
+          board.(i).(j) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true };
+        end
+    done
+  else if i < size - 1 then 
+    solve_backtrack board tiles (i + 1) j 
+  else if j < size - 1 then
+    solve_backtrack board tiles 0 (j + 1) 
+  else 
+    print_board board;;
 
 
 (* main *)
@@ -133,7 +195,8 @@ Printf.printf "\n\nShuffled board\n" ;;
 let b = shuffle_board b ;;
 print_board b ;;
 
-
-
-
-
+Printf.printf "\n\nSolving: may the time be with you\n";;
+let tiles = init_tiles b;;
+let board = create_board size;;
+solve_backtrack board tiles 0 0;
+Printf.printf "\n\nSolving: end of time\n" ;;
