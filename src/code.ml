@@ -1,7 +1,7 @@
 Random.self_init ();;
 
-let size = 3 ;;
-let nbColor = 2 ;;
+let size = 12 ;;
+let nbColor = 10 ;;
 
 type tile = {
   id: int;
@@ -141,40 +141,47 @@ let rec solve_backtrack board tiles i j =
   
   let test_tile t i j =
     let res = ref true in
-    if j != 0 && j != (size - 1) && board.(i).(j - 1).left != tiles.(t).right then
+    if j != 0 && j != (size - 1) && board.(i).(j - 1).right != tiles.(t).left then
+      res := false
+    else if j != 0 && tiles.(t).left = 0 then
+      res := false
+    else if j != (size - 1) && tiles.(t).right = 0 then
       res := false
     else if i != 0 && i != (size - 1) && board.(i - 1).(j).bottom != tiles.(t).top then
       res := false
-    else if i == 0 && tiles.(t).top != 0 then
+    else if i != 0 && tiles.(t).top = 0 then
       res := false
-    else if i == (size - 1) && tiles.(t).bottom != 0 then
+    else if i != (size - 1) && tiles.(t).bottom = 0 then
       res := false
-    else if j == 0 && tiles.(t).left != 0 then
+    else if i = 0 && (tiles.(t).top != 0) then
       res := false
-    else if j == (size - 1) && tiles.(t).right != 0 then
+    else if i = (size - 1) && (tiles.(t).bottom != 0) then
+      res := false
+    else if j = 0 && (tiles.(t).left != 0) then
+      res := false
+    else if j = (size - 1) && (tiles.(t).right != 0) then
       res := false;
     !res; 
-  in
+  in 
   
-  if board.(i).(j) = { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true} then
+  if board.(i).(j).id = -1 then
     for t = 0 to (Array.length tiles) -1 do
-      if tiles.(t) != { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true } then (*&& tiles.(t).flag then*)
+      if tiles.(t).id != -1 then
         if test_tile t i j then begin
           board.(i).(j) <- tiles.(t);
           tiles.(t) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true };
           if i < size - 1 then 
-            solve_backtrack board tiles (i + 1) j
+            solve_backtrack board tiles (i+1) j
           else if j < size - 1 then
             solve_backtrack board tiles 0 (j+1)
           else 
             print_board board;
           tiles.(t) <- board.(i).(j);
-          (*tiles.(t).flag=false;*)
           board.(i).(j) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true }; 
         end
     done 
   else if i < size - 1 then 
-    solve_backtrack board tiles (i + 1) j
+    solve_backtrack board tiles (i+1) j
   else if j < size - 1 then
     solve_backtrack board tiles 0 (j+1)
   else 
@@ -197,5 +204,4 @@ let tiles = init_tiles b;;
 let board = create_board size;;
 solve_backtrack board tiles 0 0; 
 Printf.printf "\n\nSolving: end of time\n" ;
-
 
