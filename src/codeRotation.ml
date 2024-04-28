@@ -145,13 +145,13 @@ let rec solve_backtrack board tiles i j =
     else if k = 3 then
       test_tile := rotate_tile_right !test_tile;
     
-    if j != 0 && j != (size - 1) && board.(i).(j - 1).right != !test_tile.left then
+    if j != 0 && board.(i).(j - 1).right != !test_tile.left then
       res := false
     else if j != 0 && !test_tile.left = 0 then
       res := false
     else if j != (size - 1) && !test_tile.right = 0 then
       res := false
-    else if i != 0 && i != (size - 1) && board.(i - 1).(j).bottom != !test_tile.top then
+    else if i != 0 && board.(i - 1).(j).bottom != !test_tile.top then
       res := false
     else if i != 0 && !test_tile.top = 0 then
       res := false
