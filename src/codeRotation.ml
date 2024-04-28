@@ -1,7 +1,7 @@
 Random.self_init ();;
 
-let size = 12 ;;
-let nbColor = 10 ;;
+let size = 4 ;;
+let nbColor = 3 ;;
 
 type tile = {
   id: int;
@@ -9,18 +9,7 @@ type tile = {
   right: int;
   bottom: int;
   left: int;
-  flag: bool;
-} ;;
-
-let rotate_tile_left t:tile =
-  {
-    id=t.id;
-    right = t.top;
-    top = t.right;
-    bottom = t.left;
-    left = t.bottom;
-    flag= t.flag;
-  } ;;
+} ;; 
 
 let rotate_tile_right t:tile =
   {
@@ -29,7 +18,6 @@ let rotate_tile_right t:tile =
     bottom = t.right;
     left = t.top;
     right = t.bottom;
-    flag= t.flag;
   } ;;
 
 let rotate_tile_180 t:tile =
@@ -39,8 +27,17 @@ let rotate_tile_180 t:tile =
     bottom = t.top;
     left = t.right;
     right = t.left;
-    flag= t.flag;
   } ;; 
+
+
+let rotate_tile_left t:tile =
+  {
+    id=t.id;
+    right = t.top;
+    top = t.right;
+    bottom = t.left;
+    left = t.bottom;
+  } ;;
 
 let create_random_tile () tile =
   {
@@ -49,14 +46,13 @@ let create_random_tile () tile =
     bottom = Random.int nbColor;
     left = Random.int nbColor;
     right = Random.int nbColor;
-    flag= true;
   } ;; 
 
 
 let create_board size =
   Array.init size (fun _ ->
       Array.init size (fun _ ->
-          { id=(-1); top=0; right=0; left=0; bottom=0; flag=true}
+          { id=(-1); top=0; right=0; left=0; bottom=0}
         )
     ) ;; 
 
@@ -71,8 +67,7 @@ let init_board size =
             bottom = if i = size-1 then 0 else Random.int nbColor + 1;
             left = if j = 0 then 0 else board.(i).(j - 1).right;
             right = if j = size - 1 then 0 else Random.int nbColor + 1;
-            id = i*size+j; 
-            flag=true;
+            id = i*size+j;
           };
       done
     else 
@@ -84,7 +79,6 @@ let init_board size =
             left = if j = 0 then 0 else Random.int nbColor + 1;
             right = if j = size - 1 then 0 else board.(i).(j + 1).left;
             id = i*size+j; 
-            flag=true;
           };
       done;
   done; 
@@ -129,7 +123,7 @@ let shuffle_board board =
   board ;;
 
 let init_tiles board=
-  let tiles = Array.make (size*size) ({ id=(-1); top=0; right=0; left=0; bottom=0; flag=true}) in
+  let tiles = Array.make (size*size) ({ id=(-1); top=0; right=0; left=0; bottom=0}) in
   for i = 0 to size - 1 do
     for j = 0 to size - 1 do
       tiles.((i)*size+j) <- board.(i).(j);
@@ -139,27 +133,37 @@ let init_tiles board=
 
 let rec solve_backtrack board tiles i j =
   
-  let test_tile t i j =
+  let test_tile t i j k =
     let res = ref true in
-    if j != 0 && j != (size - 1) && board.(i).(j - 1).right != tiles.(t).left then
+    
+    let test_tile = ref tiles.(t) in
+    
+    if k = 1 then 
+      test_tile := rotate_tile_left !test_tile
+    else if k = 2 then
+      test_tile := rotate_tile_180 !test_tile
+    else if k = 3 then
+      test_tile := rotate_tile_right !test_tile;
+    
+    if j != 0 && j != (size - 1) && board.(i).(j - 1).right != !test_tile.left then
       res := false
-    else if j != 0 && tiles.(t).left = 0 then
+    else if j != 0 && !test_tile.left = 0 then
       res := false
-    else if j != (size - 1) && tiles.(t).right = 0 then
+    else if j != (size - 1) && !test_tile.right = 0 then
       res := false
-    else if i != 0 && i != (size - 1) && board.(i - 1).(j).bottom != tiles.(t).top then
+    else if i != 0 && i != (size - 1) && board.(i - 1).(j).bottom != !test_tile.top then
       res := false
-    else if i != 0 && tiles.(t).top = 0 then
+    else if i != 0 && !test_tile.top = 0 then
       res := false
-    else if i != (size - 1) && tiles.(t).bottom = 0 then
+    else if i != (size - 1) && !test_tile.bottom = 0 then
       res := false
-    else if i = 0 && (tiles.(t).top != 0) then
+    else if i = 0 && (!test_tile.top != 0) then
       res := false
-    else if i = (size - 1) && (tiles.(t).bottom != 0) then
+    else if i = (size - 1) && (!test_tile.bottom != 0) then
       res := false
-    else if j = 0 && (tiles.(t).left != 0) then
+    else if j = 0 && (!test_tile.left != 0) then
       res := false
-    else if j = (size - 1) && (tiles.(t).right != 0) then
+    else if j = (size - 1) && (!test_tile.right != 0) then
       res := false;
     !res; 
   in 
@@ -167,18 +171,37 @@ let rec solve_backtrack board tiles i j =
   if board.(i).(j).id = -1 then
     for t = 0 to (Array.length tiles) -1 do
       if tiles.(t).id != -1 then
-        if test_tile t i j then begin
-          board.(i).(j) <- tiles.(t);
-          tiles.(t) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true };
-          if i < size - 1 then 
-            solve_backtrack board tiles (i+1) j
-          else if j < size - 1 then
-            solve_backtrack board tiles 0 (j+1)
-          else 
-            print_board board;
-          tiles.(t) <- board.(i).(j);
-          board.(i).(j) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true }; 
-        end
+        for k = 0 to 3 do
+          if test_tile t i j k then 
+            begin 
+              if k=0 then 
+                board.(i).(j) <- tiles.(t)
+              else if k = 1 then 
+                board.(i).(j) <- rotate_tile_left tiles.(t)
+              else if k = 2 then
+                board.(i).(j) <- rotate_tile_180 tiles.(t)
+              else
+                board.(i).(j) <- rotate_tile_right tiles.(t);
+              
+              tiles.(t) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0 };
+              if i < size - 1 then 
+                solve_backtrack board tiles (i+1) j 
+              else if j < size - 1 then
+                solve_backtrack board tiles 0 (j+1)
+              else 
+                print_board board;
+              
+              if k=0 then
+                tiles.(t) <- board.(i).(j)
+              else if k = 1 then 
+                tiles.(t) <- rotate_tile_right board.(i).(j)
+              else if k = 2 then
+                tiles.(t) <- rotate_tile_180 board.(i).(j)
+              else
+                tiles.(t) <- rotate_tile_left board.(i).(j);
+              board.(i).(j) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0 }; 
+            end 
+        done 
     done 
   else if i < size - 1 then 
     solve_backtrack board tiles (i+1) j
