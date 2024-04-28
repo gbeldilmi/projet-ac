@@ -141,13 +141,13 @@ let rec solve_backtrack board tiles i j =
   
   let test_tile t i j =
     let res = ref true in
-    if j != 0 && j != (size - 1) && board.(i).(j - 1).right != tiles.(t).left then
+    if j != 0 && board.(i).(j - 1).right != tiles.(t).left then
       res := false
     else if j != 0 && tiles.(t).left = 0 then
       res := false
     else if j != (size - 1) && tiles.(t).right = 0 then
       res := false
-    else if i != 0 && i != (size - 1) && board.(i - 1).(j).bottom != tiles.(t).top then
+    else if i != 0 && board.(i - 1).(j).bottom != tiles.(t).top then
       res := false
     else if i != 0 && tiles.(t).top = 0 then
       res := false
