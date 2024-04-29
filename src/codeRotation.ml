@@ -16,8 +16,8 @@ let rotate_tile_right t:tile =
     id=t.id;
     top = t.left;
     bottom = t.right;
-    left = t.top;
-    right = t.bottom;
+    left = t.bottom;
+    right = t.top;
   } ;;
 
 let rotate_tile_180 t:tile =
@@ -33,10 +33,10 @@ let rotate_tile_180 t:tile =
 let rotate_tile_left t:tile =
   {
     id=t.id;
-    right = t.top;
+    right = t.bottom;
     top = t.right;
     bottom = t.left;
-    left = t.bottom;
+    left = t.top;
   } ;;
 
 let create_random_tile () tile =
