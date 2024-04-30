@@ -1,167 +1,29 @@
-\documentclass[12pt, openany]{report}
+\documentclass[french]{rapportAlgoM1}
 
-\RequirePackage[paperheight=29.7cm, paperwidth=21cm,
-%includehead,
-nomarginpar,
-textwidth=18cm,
-textheight=23cm,
-headheight=1.5cm,
-lmargin=2cm,
-rmargin=2cm,
-%showframe,
-]{geometry}
-
-\RequirePackage{lastpage}
-
-%\renewcommand{\section}{%
-%	\@startsection
-%	{section}{1}{0pt}{-1.5ex plus -1ex minus -.2ex}%
-%	{1ex plus .2ex}{\large\sffamily\slshape\headlinecolor}%
-%}
-%
-
-\newcommand{\headlinecolor}{\normalcolor}
-\RequirePackage{xcolor}
-
-\RequirePackage{tikz}
-
-\RequirePackage[utf8]{inputenc}
-\RequirePackage[T1]{fontenc}
-\RequirePackage{framed,eso-pic,graphicx,url}
-
-%2024 inutile \RequirePackage[french]{babel}
-
-
-%headers et footers avec FancyHeader
-\RequirePackage{fancyhdr}
-\pagestyle{fancy}
-
-\lhead{{\small \auteurA \ \auteurB \ \auteurC}}
-\rhead{Projet <<\ Algorithmique et complexité\ >>}
-\chead{}
-\lfoot{{\small \textit{\sujet}}}
-\rfoot{\textsf{\small{\thepage}}}%/\pageref{LastPage}}}}
-\cfoot{}
-
-%%"boîte" colorée pour le sujet de la page de garde
-\RequirePackage{tcolorbox}
-
-%pour les matrices et les notations mathématiques
-\RequirePackage{amsmath}
-
-%%URL et lien dasn le texte
-\RequirePackage{hyperref}
-\RequirePackage{url}
-
-%%au besoin
-\RequirePackage{verbatim}
-
-%%pour les figures et subfigures
-\RequirePackage{caption}
-\RequirePackage{subcaption}
-
-%%listings
-\RequirePackage{listings}
-\lstset{language=caml, breaklines=true,
-	backgroundcolor=\color{pastelgray},
-	fillcolor=\color{white},
-	rulesepcolor=\color{black},
-	rulecolor=\color{gray},
-	columns=fullflexible,
-	showstringspaces=false,          % underline spaces within strings only
-	%framesep=14pt,
-	%framerule=0pt,
-	showspaces=false,                % show spaces everywhere adding particul
-	numbers=left,                   % where to put the line-numbers; possible values are (none, left, right)
-	%numbersep=5pt,                   % how far the line-numbers are from the code
-	numberstyle=\tiny\color{black}, % the style that is used for the line-numbersframe=single,
-	basicstyle=\footnotesize\ttfamily,
-	frame=shadowbox,
-	frameround=tttt,
-	keywordstyle=\bfseries\color{olive},
-	commentstyle=\itshape\color{purple},
-	identifierstyle=\color{blue},
-	stringstyle=\color{orange},
-	literate=
-	{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
-	{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
-	{à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
-	{À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
-	{ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
-	{Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
-	{â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
-	{Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
-	{Ã}{{\~A}}1 {ã}{{\~a}}1 {Õ}{{\~O}}1 {õ}{{\~o}}1
-	{œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
-	{ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
-	{ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
-	{€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
-	{»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
-}
-
-
-
-\setcounter{secnumdepth}{2}
-\setcounter{chapter}{1}
-
-% % % % % % % % % % % % % % % %
-% http://latexcolor.com/
-% % % % % % % % % % % % % % % %
-\definecolor{bleudefrance}{rgb}{0.19, 0.55, 0.91} %Bleu de France #318CE7
-\definecolor{pastelgray}{rgb}{0.93, 0.93, 0.93}
-% % % % % % % % % % % % % % % %
-% http://ethanschoonover.com/solarized
-% % % % % % % % % % % % % % % %
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
-\usepackage[frenchb]{babel}
-\usepackage{libertine}
-\usepackage[pdftex]{graphicx}
-\usepackage{lingmacros}
 \usepackage{mdframed}
-\usepackage[latin1]{inputenc}
-\usepackage[francais]{babel}
-\usepackage{tree-dvips}
-\usepackage{tikz}
-\usepackage{listings}
-\usepackage[dvipsnames]{xcolor}
-\usepackage{fancyvrb}
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd{\@verbatim}
-  {\verbatim@font}
-  {\verbatim@font\tiny}
-  {}{}
-\makeatother
+
+%Définitions des auteurs
+\newcommand{\auteurA}{Elio GENCE}
+\newcommand{\auteurB}{Guillaume BELDILMI}
+
+%Définition du sujet
+\newcommand{\sujet}{Sujet n°4 : Eternity II}
+
+%% Définitions pour le projet
+\title{\LARGE{\titreGeneral}}%ne pas modifier
+\author{\auteurA \\ \auteurB}% à modifier selon le nombre d'auteurs
+
+\date{2023-24}
+
 \begin{document}
-\begin{titlepage}
-  \begin{sffamily}
-  \begin{center}
-    \includegraphics[scale=1]{img/logo-ub.png}~\\[1.5cm]
-    \textsc{\LARGE Université de Bourgogne}\\[2cm]
-    \textsc{\Large Rapport de projet}\\[1.5cm]
-    \HRule \\[0.4cm]
-    { \huge \bfseries Algorithmique et Complexité\\[0.4cm] }
-    \HRule \\[2cm]
-    \includegraphics[scale=1]{img/logo-ufr.png}
-    \\[2cm]
-    \begin{minipage}{0.4\textwidth}
-      \begin{flushleft} \large
-        BELDILMI \textsc{Guillaume}\\
-        GENCE \textsc{Elio}\\
-      \end{flushleft}
-    \end{minipage}
-    \begin{minipage}{0.4\textwidth}
-      \begin{flushright} \large
-        \emph{Tuteur :} RAFFIN \textsc{Romain}\\
-      \end{flushright}
-    \end{minipage}
-    \vfill
-    {\large 2024}
-  \end{center}
-  \end{sffamily}
-\end{titlepage}
+\setlength{\parindent}{1cm}%ne pas modifier
+%\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\input{pageGardeAlgoM1}%ne pas modifier
+
+\tableofcontents
+\newpage
+
 \section*{Présentation du projet}
 
 Eternity II est un jeu de puzzle inventé par Christopher Monckton en
@@ -225,6 +87,26 @@ Nous avons pour notre faire 2 versions différentes : une avec rotation de pièc
 
 \subsection*{Analyse de la complexité}
 
+Nous allons faire l'analysé de la complexité sur le code sans Rotation 
+Lors d'une itération le nombre d'opération à faire est minimime (quelques test et opérations).
+Nous allons donc simplifier le tout et pour le bien de nos calcul nous alons supposer qu'une itération est égal à O(1).
+
+Partons d'une situation impossible : tout les pièces sont exactements similaire (en ignorant également le concept de bordure).
+Ceci est notre pire scénario !
+L'algorithme va donc tester toute les pièces à toutes les emplacement possible
+N = Taille du puzzle largeur/longueur
+N*N = Nombre de pièce
+En d'autre terme l'algorithme va parcourir N*N fois la première case puis (N*N)*(N*N) la seconde case etc etc
+Cela nous donne donc une complexité de O(N!)
+
+Maintenant le meilleur scénario : toutes les pièces sont uniques et une seul solution est possible
+Alors dans cette situation l'algorithme va être bien plus rapide :
+Il va parcourir N*N la première case N*N la seconde case (car seulement une seule piece valide à la première case) etc etc
+Nous donnant donc une complexite de O(N)
+
+Cela veux donc dire que la complexité va varier de O(N) à O(N!).
+Le facteur qui va décider de la complexité de l'algorithme est le nombre de couleur, plus celui ci sera élevé et plus les pièces seront uniques.
+En d'autre termes : moins nous avons de couleurs, plus de test sont nécéssaire à être effectuer pour verifier toutes les solutions et plus le code sera couteux/long à exécuter.
 
 \section*{Explication détaillés (code sans Rotation)}
 
@@ -302,7 +184,7 @@ par notre programme avec rotation :
 \begin{verbnobox}\fontsize{7pt}{7pt}\selectfont
   \VerbatimInput{sources/resR_5x5.txt}
 \end{verbnobox}
-Comme dis lors de l'explication, nous obtenons tous les résultats dans 4 rotations possibles donc il faut diviser par 4 le nombre de résultat obtenus pour avoir le nombre réel de solutions possibles (un code prennant en compte ce détail sera ajouter en annexe).
+Comme dis lors de l'explication, nous obtenons tous les résultats dans 4 rotations possibles donc il faut diviser par 4 le nombre de résultat obtenus pour avoir le nombre réel de solutions possibles (un code prennant en compte ce détail sera ajouter en annexe \ref{codeComplet:RotationTileLocked}
 
 
 \section*{Conclusion}
@@ -312,12 +194,12 @@ Nous restons relativement satisfait de notre projet.
 
 \section*{Annexe}
 
-\lstinputlisting[inputpath=sources/, caption=Code sans Rotation (\lstname), label=code:NoRotation]{code.ml}
+\lstinputlisting[inputpath=sources/, caption=Code sans Rotation (\lstname), label=codeComplet:NoRotation]{code.ml}
 
-\lstinputlisting[inputpath=sources/, caption=Code avec Rotation (\lstname), label=code:Rotation]{codeRotation.ml}
+\lstinputlisting[inputpath=sources/, caption=Code avec Rotation (\lstname), label=codeComplet:Rotation]{codeRotation.ml}
 
-\lstinputlisting[inputpath=sources/, caption=Code avec Rotation et première tuile Locked (\lstname), label=code:RotationTileLocked]{codeRotation1stTileLocked.ml}
+\lstinputlisting[inputpath=sources/, caption=Code avec Rotation et première tuile Locked (\lstname), label=codeComplet:RotationTileLocked]{codeRotation1stTileLocked.ml}
 
-\lstinputlisting[inputpath=sources/, caption=Prototype Python (\lstname), label=code:Prototype]{proto.py}
+\lstinputlisting[inputpath=sources/, caption=Prototype Python (\lstname), label=codeComplet:Prototype]{proto.py}
 
 \end{document}
