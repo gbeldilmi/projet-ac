@@ -37,10 +37,10 @@ main_rot : $(RES_MAIN_ROT_FILE)
 #------------------------------------------------------------------------------#
 $(RES_PROTO_FILE) : $(PROTO_FILE)
 	@mkdir -pv $(dir $@)
-	@time python3 $< > $@
+	@python3 $< > $@
 $(RES_MAIN_FILE) : $(MAIN_FILE)
 	@mkdir -pv $(dir $@)
-	@time ocaml $< > $@
+	@ocaml $< > $@
 $(RES_MAIN_ROT_FILE) : $(MAIN_ROT_FILE)
 	@mkdir -pv $(dir $@)
-	@time ocaml $< > $@
+	@ocaml $< > $@
