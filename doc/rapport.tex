@@ -1,0 +1,191 @@
+\documentclass[12pt, openany]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[frenchb]{babel}
+\usepackage{libertine}
+\usepackage[pdftex]{graphicx}
+\usepackage{lingmacros}
+\usepackage{mdframed}
+\usepackage[latin1]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{tree-dvips}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyvrb}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@verbatim}
+  {\verbatim@font}
+  {\verbatim@font\tiny}
+  {}{}
+\makeatother
+\begin{document}
+\begin{titlepage}
+  \begin{sffamily}
+  \begin{center}
+    \includegraphics[scale=1]{img/logo-ub.png}~\\[1.5cm]
+    \textsc{\LARGE Université de Bourgogne}\\[2cm]
+    \textsc{\Large Rapport de projet}\\[1.5cm]
+    \HRule \\[0.4cm]
+    { \huge \bfseries Algorithmique et Complexité\\[0.4cm] }
+    \HRule \\[2cm]
+    \includegraphics[scale=1]{img/logo-ufr.png}
+    \\[2cm]
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushleft} \large
+        BELDILMI \textsc{Guillaume}\\
+        GENCE \textsc{Elio}\\
+      \end{flushleft}
+    \end{minipage}
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushright} \large
+        \emph{Tuteur :} RAFFIN \textsc{Romain}\\
+      \end{flushright}
+    \end{minipage}
+    \vfill
+    {\large 2024}
+  \end{center}
+  \end{sffamily}
+\end{titlepage}
+\section*{Présentation du projet}
+
+Eternity II est un jeu de puzzle inventé par Christopher Monckton en
+2007. Le but du jeu est de placer des pièces de puzzle de manière à
+ce que les couleurs des bords des pièces soient identiques aux
+couleurs des bords adjacents.  Les pièces sont carrées et chaque
+côté est coloré. Les pièces sont placées sur une grille de taille
+$n \times n$.
+
+Notre projet était de créer un solveur capable de résoudre des
+puzzles d’Eternity II de taille 12 par 12 avec une dizaine de
+couleurs. Nos seules contraintes étaient que notre programme devait
+être écrit en Ocaml et que la résolution devait se faire par une
+méthode de recherche arborescente avec retour en arrière (backtrack).
+
+Pour cela, nous avons divisé le projet en plusieurs étapes :
+tout d’abord, nous avons créé une structure de données pour
+représenter les pièces et la grille. Ensuite, nous avons créé un
+ensemble de fonctions permettant de générer un puzzle aléatoire,
+de mélanger les pièces du puzzle, et enfin de résoudre le puzzle.
+A cela s’ajoute une autre fonction permettant d'afficher le puzzle
+afin d'avoir un retour sur l'exécution du programme.
+
+\section*{Organisation}
+
+Premièrement, nous avons réalisé un prototype conformément à
+l'ISO-1664 dans un langage plus abordable, Python. Ce prototype
+nous a permis de mieux comprendre le problème et de définir
+l'architecture de notre programme.
+
+Ensuite, nous avons transcrit ce prototype en Ocaml, en corrigeant
+quelques erreurs et en ajoutant des fonctionnalités précédemment
+omises après avoir pris en compte le retour du corps enseignant.
+
+Nous avons ensuite testé notre programme sur des puzzles
+progressivement de plus en plus grands.
+
+Enfin, nous avons peaufiné notre programme en simplifiant le code
+et en corrigeant l'affichage du puzzle afin de rendre le résultat
+plus facile à manipuler.
+
+\section*{Explication de l'algorithme utilisé}
+
+Nous avons utilisé un algorithme naïf de backtracking pour résoudre
+le puzzle. L’idée est de placer chaque pièce sur la grille en
+progressant selon le sens d’écriture. Si une pièce ne peut pas être
+placée, on revient à la pièce précédemment placée et on essaie une
+autre pièce. Si aucune pièce ne peut être placée, on revient à la
+pièce précédente, et ainsi de suite jusqu’à ce que le puzzle soit
+résolu. Une fois le puzzle résolu, on affiche le résultat et puis
+le programme poursuit son exécution afin de trouver d'autres
+solutions. 
+
+D'autres algorithmes plus performants existent, optimisants notamment
+l'ordre de placement des pièces (commençant par les pièces de bords
+puis progressant vers le centre en zigzag ou en spirale), mais nous
+avons choisi de rester sur un algorithme simple pour des raisons de
+simplicité et de temps.
+
+Nous avons pour notre faire 2 versions différentes : une avec rotation de pièce et une autre sans.
+
+\subsection*{Analyse de la complexité}
+
+
+\section*{Explication détaillés (code sans Rotation)}
+
+Pour notre code, nous pouvons le diviser en 5 parties : 
+- définition d'une pièce \ref{code:tile}
+- creation des structures et initialisation \ref{code:init_board} 
+- test de pièce lors du backtrack \ref{code:test_tile} 
+- backtrack \ref{code:test_tile} 
+- affichage du résultat \ref{code:test_tile} 
+
+\lstinputlisting[inputpath=sources/, caption=Déclaration pièce  (\lstname), label=code:tile]{tile.ml} 
+
+Nous utilisons dans notre code 2 structures : board et tiles.
+Board est un tableau de tableau de pièce, il représente le plateau de jeu sur lequel on va venir placer les pièces pour essayer de résoudre le puzzle. 
+Tiles quant à lui est un tableau de pièce, il va servir à stocker la liste de pièce encore non placé sur le board.
+(à noter que si une pièce identifiant est égal à -1 alors on considère l'emplacement comme vide)
+
+L'initialisation du board ce fait avec un parcours de haut en bas et de gauche à droite/droite à gauche une ligne sur deux (afin de simuler un parcours en zigzag dans les algorithmes de backtrack optimal)
+Lors de la création d'un pièce nous avons donc besoin de vérifier seulement 3 paramètres : 
+- s'il est adjacent à une bordure (si c'est le cas le/les cotés adjacent prennent la valeur 0)
+- la valeur du coté inférieur de la pièce supérieur
+- la valeur du coté gauche de la pièce à droite (ou inverse pour un parcours de droite à gauche)
+- le reste des coté prendront une valeur aléatoire parmis celle disponible (défini au tout début du code pour une modification rapide)
+\lstinputlisting[inputpath=sources/, caption=Initialisation du board (\lstname), label=code:init_board]{init_board.ml} 
+
+Pour ce qui est du test des tuiles lors du backtrack voici le code et ce qui est testé
+\lstinputlisting[inputpath=sources/, caption=Test de compatibilité des pièces (fonction imbriqués)(\lstname), label=code:test_tile]{test_tile.ml} 
+
+Le backtrack la partie la plus important est également la partie la plus simple, le test s'occupant du principal tout ce qui reste à faire maintenant est de gérer les boucles de recherches et les appels récurssifs. 
+\lstinputlisting[inputpath=sources/, caption=Backtrack (fonction principale) (\lstname), label=code:backtrack]{backtrack.ml} 
+
+Enfin il ne nous reste plus que l'affichage qui est composé de plusieurs boucles imbriqués afin d'obtenir un affichage facilement lisible 
+\lstinputlisting[inputpath=sources/, caption=Affichage du résultat (board)(\lstname), label=code:print]{print.ml} 
+
+\subsection*{Explication détaillés (code avec Rotation)}
+
+L'algorithme avec rotation est très similaire cependant dans le backtrack \ref{code:backtrack} et dans le test de pièce \ref{code:test_tile} on rajoute un nouveau paramètre (que l'on nomme k) variant entre 0 et 3 afin de pouvoir tester chaque rotation et ainsi obtenir de nouvelle solution.
+
+\lstinputlisting[inputpath=sources/, caption=Paramètre k pour savoir le sens de rotation de la pièce (\lstname), label=code:rotation]{rotation.ml}
+
+Ainsi toutes les solutions possibles seront obtenus mais cela entraine 2 problème :
+La durée -> le code est bien plus long car bien plus de solution à tester
+Les solutions -> Le nombre de solution obtenus peux en réalité être divisé par 4 car nous trouvons des solutions "doublons" que l'on peut retrouver simplement en tournant le plateau de puzzle. Une solution possible à se problème serait de fixer un coin et de faire le backtrack à partir de ce moment la.
+
+\section*{Résultats et analyses}
+
+\subsection*{Temps}
+
+Voici les temps observer pour un code sans rotation 
+
+\subsection*{Affichage}
+
+Voici un exemple de puzzle de taille 5 par 5 avec 5 couleurs résolu
+par notre programme sans rotation :
+\lstinputlisting[inputpath=sources/, caption=Affichage du résultat (sans rotation)(\lstname), label=res:5.5]{resNR_5x5.txt} 
+
+Voici un exemple de puzzle de taille 5 par 5 avec 5 couleurs résolu
+par notre programme avec rotation :
+\lstinputlisting[inputpath=sources/, caption=Affichage du résultat (avec rotation)(\lstname), label=res:5.5]{resR_5x5.txt}
+Comme dis lors de l'explication, nous obtenons tous les résultats dans 4 rotations possibles donc il faut diviser par 4 le nombre de résultat obtenus pour avoir le nombre réel de solutions possibles
+
+\begin{verbnobox}\fontsize{7pt}{7pt}\selectfont
+  \VerbatimInput{demo_5_3.txt}
+\end{verbnobox}
+
+
+
+
+
+
+
+
+\section*{Conclusion}
+% une conclusion qui établit (ou non) en justifiant le lien entre votre implé-
+% mentation et l’analyse théorique de l’algorithme
+
+\end{document}
