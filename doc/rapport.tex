@@ -1,6 +1,5 @@
 \documentclass[12pt, openany]{report}
 
-\LoadClass[12pt,french]{book}
 \RequirePackage[paperheight=29.7cm, paperwidth=21cm,
 %includehead,
 nomarginpar,
@@ -121,29 +120,48 @@ rmargin=2cm,
 \usepackage[pdftex]{graphicx}
 \usepackage{lingmacros}
 \usepackage{mdframed}
-
-%Définitions des auteurs
-\newcommand{\auteurA}{Elio GENCE}
-\newcommand{\auteurB}{Guillaume BELDILMI}
-
-%Définition du sujet
-\newcommand{\sujet}{Sujet n°4 : Eternity II}
-
-%% Définitions pour le projet
-\title{\LARGE{\titreGeneral}}%ne pas modifier
-\author{\auteurA \\ \auteurB}% à modifier selon le nombre d'auteurs
-
-\date{2023-24}
-
+\usepackage[latin1]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{tree-dvips}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyvrb}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@verbatim}
+  {\verbatim@font}
+  {\verbatim@font\tiny}
+  {}{}
+\makeatother
 \begin{document}
-\setlength{\parindent}{1cm}%ne pas modifier
-%\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
-
-\input{pageGardeAlgoM1}%ne pas modifier
-
-\tableofcontents
-\newpage
-
+\begin{titlepage}
+  \begin{sffamily}
+  \begin{center}
+    \includegraphics[scale=1]{img/logo-ub.png}~\\[1.5cm]
+    \textsc{\LARGE Université de Bourgogne}\\[2cm]
+    \textsc{\Large Rapport de projet}\\[1.5cm]
+    \HRule \\[0.4cm]
+    { \huge \bfseries Algorithmique et Complexité\\[0.4cm] }
+    \HRule \\[2cm]
+    \includegraphics[scale=1]{img/logo-ufr.png}
+    \\[2cm]
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushleft} \large
+        BELDILMI \textsc{Guillaume}\\
+        GENCE \textsc{Elio}\\
+      \end{flushleft}
+    \end{minipage}
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushright} \large
+        \emph{Tuteur :} RAFFIN \textsc{Romain}\\
+      \end{flushright}
+    \end{minipage}
+    \vfill
+    {\large 2024}
+  \end{center}
+  \end{sffamily}
+\end{titlepage}
 \section*{Présentation du projet}
 
 Eternity II est un jeu de puzzle inventé par Christopher Monckton en

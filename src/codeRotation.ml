@@ -1,7 +1,7 @@
 Random.self_init ();;
 
-let size = 4 ;;
-let nbColor = 3 ;;
+let size = 12 ;;
+let nbColor = 10 ;;
 
 type tile = {
   id: int;
@@ -85,6 +85,7 @@ let init_board size =
   board;;
 
 let print_board = fun board ->
+  Printf.printf "<deb>\n";
   Array.iter (fun row ->
       Array.iter (fun tile ->
           Printf.printf "+--------------";
@@ -107,7 +108,7 @@ let print_board = fun board ->
   Array.iter (fun _ ->
       Printf.printf "--------------+";
     ) board;
-  Printf.printf "\n" ;;
+  Printf.printf "\n\n" ;;
 
 
 let shuffle_board board =
