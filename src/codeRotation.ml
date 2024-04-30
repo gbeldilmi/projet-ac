@@ -1,7 +1,7 @@
 Random.self_init ();;
 
-let size = 4 ;;
-let nbColor = 3 ;;
+let size = 12 ;;
+let nbColor = 10 ;;
 
 type tile = {
   id: int;
