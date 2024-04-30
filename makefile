@@ -6,33 +6,30 @@ RESULT_DIR          := res
 
 PROTO_FILE          := $(SOURCE_DIR)/proto.py
 MAIN_FILE           := $(SOURCE_DIR)/code.ml
-ALT_V1_FILE         := $(SOURCE_DIR)/codeRotation.ml
+MAIN_ROT_FILE       := $(SOURCE_DIR)/codeRotation.ml
 
 RES_PROTO_FILE      := $(RESULT_DIR)/proto.txt
 RES_MAIN_FILE       := $(RESULT_DIR)/code.txt
-RES_ALT_V1_FILE     := $(RESULT_DIR)/codeRotation.txt
+RES_MAIN_ROT_FILE   := $(RESULT_DIR)/codeRotation.txt
 
 #------------------------------------------------------------------------------#
 # Commands                                                                     #
 #------------------------------------------------------------------------------#
-.PHONY : all, clean, re, proto, main, alt_v1
-all : main
-	@echo "  Other available targets:"
-	@echo "   -> proto (prototype using python, very long)"
-	@echo "   -> alt_v1 (alternative version checking all rotations)"
+.PHONY : all, clean, re, proto, main, main_rot
+all : main main_rot
 clean : $(RESULT_DIR)
 	@rm -rv $(RESULT_DIR)
 re : clean
 	@make
 
 proto : $(RES_PROTO_FILE)
-	@echo "Done!"
+	@echo "proto : Done!"
 	@echo "Result in $(RESULT_DIR)"
 main : $(RES_MAIN_FILE)
-	@echo "Done!"
+	@echo "main version : Done!"
 	@echo "Result in $(RESULT_DIR)"
-alt_v1 : $(RES_ALT_V1_FILE)
-	@echo "Done!"
+main_rot : $(RES_MAIN_ROT_FILE)
+	@echo "main version (with rotations) : Done!"
 	@echo "Result in $(RESULT_DIR)"
 
 #------------------------------------------------------------------------------#
@@ -44,6 +41,6 @@ $(RES_PROTO_FILE) : $(PROTO_FILE)
 $(RES_MAIN_FILE) : $(MAIN_FILE)
 	@mkdir -pv $(dir $@)
 	@time ocaml $< > $@
-$(RES_ALT_V1_FILE) : $(ALT_V1_FILE)
+$(RES_MAIN_ROT_FILE) : $(MAIN_ROT_FILE)
 	@mkdir -pv $(dir $@)
 	@time ocaml $< > $@
