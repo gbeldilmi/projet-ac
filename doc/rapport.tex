@@ -121,48 +121,29 @@ rmargin=2cm,
 \usepackage[pdftex]{graphicx}
 \usepackage{lingmacros}
 \usepackage{mdframed}
-\usepackage[latin1]{inputenc}
-\usepackage[francais]{babel}
-\usepackage{tree-dvips}
-\usepackage{tikz}
-\usepackage{listings}
-\usepackage[dvipsnames]{xcolor}
-\usepackage{fancyvrb}
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd{\@verbatim}
-  {\verbatim@font}
-  {\verbatim@font\tiny}
-  {}{}
-\makeatother
+
+%Définitions des auteurs
+\newcommand{\auteurA}{Elio GENCE}
+\newcommand{\auteurB}{Guillaume BELDILMI}
+
+%Définition du sujet
+\newcommand{\sujet}{Sujet n°4 : Eternity II}
+
+%% Définitions pour le projet
+\title{\LARGE{\titreGeneral}}%ne pas modifier
+\author{\auteurA \\ \auteurB}% à modifier selon le nombre d'auteurs
+
+\date{2023-24}
+
 \begin{document}
-\begin{titlepage}
-  \begin{sffamily}
-  \begin{center}
-    \includegraphics[scale=1]{img/logo-ub.png}~\\[1.5cm]
-    \textsc{\LARGE Université de Bourgogne}\\[2cm]
-    \textsc{\Large Rapport de projet}\\[1.5cm]
-    \HRule \\[0.4cm]
-    { \huge \bfseries Algorithmique et Complexité\\[0.4cm] }
-    \HRule \\[2cm]
-    \includegraphics[scale=1]{img/logo-ufr.png}
-    \\[2cm]
-    \begin{minipage}{0.4\textwidth}
-      \begin{flushleft} \large
-        BELDILMI \textsc{Guillaume}\\
-        GENCE \textsc{Elio}\\
-      \end{flushleft}
-    \end{minipage}
-    \begin{minipage}{0.4\textwidth}
-      \begin{flushright} \large
-        \emph{Tuteur :} RAFFIN \textsc{Romain}\\
-      \end{flushright}
-    \end{minipage}
-    \vfill
-    {\large 2024}
-  \end{center}
-  \end{sffamily}
-\end{titlepage}
+\setlength{\parindent}{1cm}%ne pas modifier
+%\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\input{pageGardeAlgoM1}%ne pas modifier
+
+\tableofcontents
+\newpage
+
 \section*{Présentation du projet}
 
 Eternity II est un jeu de puzzle inventé par Christopher Monckton en
@@ -303,15 +284,7 @@ par notre programme avec rotation :
 \begin{verbnobox}\fontsize{7pt}{7pt}\selectfont
   \VerbatimInput{sources/resR_5x5.txt}
 \end{verbnobox}
-Comme dis lors de l'explication, nous obtenons tous les résultats dans 4 rotations possibles donc il faut diviser par 4 le nombre de résultat obtenus pour avoir le nombre réel de solutions possibles (un code prennant en compte ce détail sera ajouter en annexe)
-
-
-
-
-
-
-
-
+Comme dis lors de l'explication, nous obtenons tous les résultats dans 4 rotations possibles donc il faut diviser par 4 le nombre de résultat obtenus pour avoir le nombre réel de solutions possibles (un code prennant en compte ce détail sera ajouter en annexe \ref{codeComplet:RotationTileLocked}
 
 
 \section*{Conclusion}
@@ -319,6 +292,8 @@ Comme dis lors de l'explication, nous obtenons tous les résultats dans 4 rotati
 % mentation et l’analyse théorique de l’algorithme
 
 \section*{Annexe}
+
+\lstinputlisting[inputpath=sources/, caption=Paramètre k pour savoir le sens de rotation de la pièce (\lstname), label=code:rotation]{rotation.ml}
 
 COPIER TOUT LES CODES, PYTHON AUSSI ???
 
