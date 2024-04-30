@@ -187,7 +187,7 @@ let rec solve_backtrack board tiles i j =
               if i < size - 1 then 
                 solve_backtrack board tiles (i+1) j 
               else if j < size - 1 then
-                solve_backtrack board tiles 0 (j+1)
+                solve_backtrack board tiles i (j+1)
               else 
                 print_board board;
               
