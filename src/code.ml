@@ -9,7 +9,6 @@ type tile = {
   right: int;
   bottom: int;
   left: int;
-  flag: bool;
 } ;;
 
 let rotate_tile_right t:tile =
@@ -47,14 +46,13 @@ let create_random_tile () tile =
     bottom = Random.int nbColor;
     left = Random.int nbColor;
     right = Random.int nbColor;
-    flag= true;
   } ;; 
 
 
 let create_board size =
   Array.init size (fun _ ->
       Array.init size (fun _ ->
-          { id=(-1); top=0; right=0; left=0; bottom=0; flag=true}
+          { id=(-1); top=0; right=0; left=0; bottom=0}
         )
     ) ;; 
 
@@ -69,8 +67,7 @@ let init_board size =
             bottom = if i = size-1 then 0 else Random.int nbColor + 1;
             left = if j = 0 then 0 else board.(i).(j - 1).right;
             right = if j = size - 1 then 0 else Random.int nbColor + 1;
-            id = i*size+j; 
-            flag=true;
+            id = i*size+j;
           };
       done
     else 
@@ -82,7 +79,6 @@ let init_board size =
             left = if j = 0 then 0 else Random.int nbColor + 1;
             right = if j = size - 1 then 0 else board.(i).(j + 1).left;
             id = i*size+j; 
-            flag=true;
           };
       done;
   done; 
@@ -128,7 +124,7 @@ let shuffle_board board =
   board ;;
 
 let init_tiles board=
-  let tiles = Array.make (size*size) ({ id=(-1); top=0; right=0; left=0; bottom=0; flag=true}) in
+  let tiles = Array.make (size*size) ({ id=(-1); top=0; right=0; left=0; bottom=0}) in
   for i = 0 to size - 1 do
     for j = 0 to size - 1 do
       tiles.((i)*size+j) <- board.(i).(j);
@@ -168,7 +164,7 @@ let rec solve_backtrack board tiles i j =
       if tiles.(t).id != -1 then
         if test_tile t i j then begin
           board.(i).(j) <- tiles.(t);
-          tiles.(t) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true };
+          tiles.(t) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0};
           if i < size - 1 then 
             solve_backtrack board tiles (i+1) j
           else if j < size - 1 then
@@ -176,7 +172,7 @@ let rec solve_backtrack board tiles i j =
           else 
             print_board board;
           tiles.(t) <- board.(i).(j);
-          board.(i).(j) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0; flag=true }; 
+          board.(i).(j) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0 }; 
         end
     done 
   else if i < size - 1 then 
