@@ -184,10 +184,10 @@ let rec solve_backtrack board tiles i j =
                 board.(i).(j) <- rotate_tile_right tiles.(t);
               
               tiles.(t) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0 };
-              if i < size - 1 then 
-                solve_backtrack board tiles (i+1) j 
-              else if j < size - 1 then
+              if j < size - 1 then 
                 solve_backtrack board tiles i (j+1)
+              else if i < size - 1 then
+                solve_backtrack board tiles (i+1) 0
               else 
                 print_board board;
               
@@ -203,10 +203,10 @@ let rec solve_backtrack board tiles i j =
             end 
         done 
     done 
-  else if i < size - 1 then 
-    solve_backtrack board tiles (i+1) j
-  else if j < size - 1 then
-    solve_backtrack board tiles 0 (j+1)
+  else if j < size - 1 then 
+    solve_backtrack board tiles i (j+1)
+  else if i < size - 1 then
+    solve_backtrack board tiles (i+1) 0
   else 
     print_board board;
 ;;
