@@ -160,22 +160,38 @@ Les solutions -> Le nombre de solution obtenus peux en réalité être divisé p
 
 \subsection*{Temps}
 
-Voici les temps observer pour un code sans rotation 
+Voici les temps observé pour un code sans rotation :
+\begin{figure}
+  \includegraphics[width=\linewidth]{img/TimeNR.png}
+  \caption{Temps sans rotation}
+  \label{img:timeNR}
+\end{figure}
+Comme on peux le constater la durée moyenne varie selon le nombre de couleur et la taille (logique). Cependant le temps varie de facon différente. Tandis que le temps se rallonge lorsque l'on augmente la taille, il diminue au contraire quand le nombre de couleur augmente. C'est logique car le nombre de cas à tester et de solution possible diminue lorsque le nombre de couleurs augmentent, si toute les pièces sont très atypiques alors il deviens plus dur de les subsituer à l'inverse si les pièces se ressemblent (aka le nombre de couleur est faible) alors le programme va devoir tester bien plus de possibilité de résolution car les pièces vont s'imbriquer plus facilement les unes dans les autres.
+
+Voici les temps observé pour un code avec rotation :
+\begin{figure}
+  \includegraphics[width=\linewidth]{img/TimeR.png}
+  \caption{Temps avec rotation}
+  \label{img:timeR}
+\end{figure}
+Nous observons ici le même phénomène qu'avec le code sans rotation cependant les temps sont bien plus car, contrairement au précédent code, chaque pièce doit être tester 4 fois (une dans chaque sens) rendant la recherche plus fastidieuse mais également en augmentant le nombre de solution possible ! 
 
 \subsection*{Affichage}
 
 Voici un exemple de puzzle de taille 5 par 5 avec 5 couleurs résolu
 par notre programme sans rotation :
-\lstinputlisting[inputpath=sources/, caption=Affichage du résultat (sans rotation)(\lstname), label=res:5.5]{resNR_5x5.txt} 
+\begin{verbnobox}\fontsize{7pt}{7pt}\selectfont
+  \VerbatimInput{sources/resNR_5x5.txt}
+\end{verbnobox}
 
 Voici un exemple de puzzle de taille 5 par 5 avec 5 couleurs résolu
 par notre programme avec rotation :
-\lstinputlisting[inputpath=sources/, caption=Affichage du résultat (avec rotation)(\lstname), label=res:5.5]{resR_5x5.txt}
-Comme dis lors de l'explication, nous obtenons tous les résultats dans 4 rotations possibles donc il faut diviser par 4 le nombre de résultat obtenus pour avoir le nombre réel de solutions possibles
-
 \begin{verbnobox}\fontsize{7pt}{7pt}\selectfont
-  \VerbatimInput{demo_5_3.txt}
+  \VerbatimInput{sources/resR_5x5.txt}
 \end{verbnobox}
+Comme dis lors de l'explication, nous obtenons tous les résultats dans 4 rotations possibles donc il faut diviser par 4 le nombre de résultat obtenus pour avoir le nombre réel de solutions possibles (un code prennant en compte ce détail sera ajouter en annexe)
+
+
 
 
 
@@ -187,5 +203,9 @@ Comme dis lors de l'explication, nous obtenons tous les résultats dans 4 rotati
 \section*{Conclusion}
 % une conclusion qui établit (ou non) en justifiant le lien entre votre implé-
 % mentation et l’analyse théorique de l’algorithme
+
+\section*{Annexe}
+
+COPIER TOUT LES CODES, PYTHON AUSSI ???
 
 \end{document}
