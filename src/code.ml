@@ -12,45 +12,6 @@ type tile = {
   flag: bool;
 } ;;
 
-let rotate_tile_right t:tile =
-  {
-    id=t.id;
-    top = t.left;
-    bottom = t.right;
-    left = t.bottom;
-    right = t.top;
-  } ;;
-
-let rotate_tile_180 t:tile =
-  {
-    id=t.id;
-    top = t.bottom;
-    bottom = t.top;
-    left = t.right;
-    right = t.left;
-  } ;; 
-
-
-let rotate_tile_left t:tile =
-  {
-    id=t.id;
-    right = t.bottom;
-    top = t.right;
-    bottom = t.left;
-    left = t.top;
-  } ;;
-
-let create_random_tile () tile =
-  {
-    id=0;
-    top = Random.int nbColor;
-    bottom = Random.int nbColor;
-    left = Random.int nbColor;
-    right = Random.int nbColor;
-    flag= true;
-  } ;; 
-
-
 let create_board size =
   Array.init size (fun _ ->
       Array.init size (fun _ ->
