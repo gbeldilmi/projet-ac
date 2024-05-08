@@ -1,55 +1,32 @@
-\documentclass[12pt, openany]{report}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
-\usepackage[frenchb]{babel}
-\usepackage{libertine}
-\usepackage[pdftex]{graphicx}
-\usepackage{lingmacros}
+\documentclass[french]{rapport}
+
 \usepackage{mdframed}
-\usepackage[latin1]{inputenc}
-\usepackage[francais]{babel}
-\usepackage{tree-dvips}
-\usepackage{tikz}
-\usepackage{listings}
-\usepackage[dvipsnames]{xcolor}
-\usepackage{fancyvrb}
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd{\@verbatim}
-  {\verbatim@font}
-  {\verbatim@font\tiny}
-  {}{}
-\makeatother
+
+%Définitions des auteurs
+\newcommand{\auteurA}{Elio GENCE}
+\newcommand{\auteurB}{Guillaume BELDILMI}
+\newcommand{\auteurC}{}
+\newcommand{\auteurD}{}
+
+%Définition du sujet
+\newcommand{\sujet}{Sujet n°4 : Eternity II}
+
+%% Définitions pour le projet
+\title{\LARGE{\titreGeneral}}%ne pas modifier
+\author{\auteurA \\ \auteurB}% à modifier selon le nombre d'auteurs
+
+\date{2023-24}
+
 \begin{document}
-\begin{titlepage}
-  \begin{sffamily}
-  \begin{center}
-    \includegraphics[scale=1]{img/logo-ub.png}~\\[1.5cm]
-    \textsc{\LARGE Université de Bourgogne}\\[2cm]
-    \textsc{\Large Rapport de projet}\\[1.5cm]
-    \HRule \\[0.4cm]
-    { \huge \bfseries Algorithmique et Complexité\\[0.4cm] }
-    \HRule \\[2cm]
-    \includegraphics[scale=1]{img/logo-ufr.png}
-    \\[2cm]
-    \begin{minipage}{0.4\textwidth}
-      \begin{flushleft} \large
-        BELDILMI \textsc{Guillaume}\\
-        GENCE \textsc{Elio}\\
-      \end{flushleft}
-    \end{minipage}
-    \begin{minipage}{0.4\textwidth}
-      \begin{flushright} \large
-        \emph{Tuteur :} RAFFIN \textsc{Romain}\\
-      \end{flushright}
-    \end{minipage}
-    \vfill
-    {\large 2024}
-  \end{center}
-  \end{sffamily}
-\end{titlepage}
-\section*{Présentation du projet}
+\setlength{\parindent}{1cm}%ne pas modifier
+%\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\input{pageGardeAlgoM1}%ne pas modifier
+
+\tableofcontents
+\newpage
+
+\section{Présentation du projet}
 
 Eternity II est un jeu de puzzle inventé par Christopher Monckton en
 2007. Le but du jeu est de placer des pièces de puzzle de manière à
@@ -72,7 +49,7 @@ de mélanger les pièces du puzzle, et enfin de résoudre le puzzle.
 A cela s’ajoute une autre fonction permettant d'afficher le puzzle
 afin d'avoir un retour sur l'exécution du programme.
 
-\section*{Organisation}
+\section{Organisation}
 
 Premièrement, nous avons réalisé un prototype conformément à
 l'ISO-1664 dans un langage plus abordable, Python. Ce prototype
@@ -90,7 +67,7 @@ Enfin, nous avons peaufiné notre programme en simplifiant le code
 et en corrigeant l'affichage du puzzle afin de rendre le résultat
 plus facile à manipuler.
 
-\subsection*{Explication de l'algorithme utilisé}
+\section{Explication de l'algorithme utilisé}
 
 Nous avons utilisé un algorithme naïf de backtracking pour résoudre
 le puzzle. L’idée est de placer chaque pièce sur la grille en
@@ -108,33 +85,127 @@ puis progressant vers le centre en zigzag ou en spirale), mais nous
 avons choisi de rester sur un algorithme simple pour des raisons de
 simplicité et de temps.
 
-\subsection*{Analyse de la complexité}
+Nous avons pour notre faire 2 versions différentes : une avec rotation de pièce et une autre sans.
+
+\subsection{Analyse de la complexité}
+
+Nous allons faire l'analysé de la complexité sur le code sans Rotation 
+Lors d'une itération le nombre d'opération à faire est minimime (quelques test et opérations).
+Nous allons donc simplifier le tout et pour le bien de nos calcul nous alons supposer qu'une itération est égal à O(1).
+
+Partons d'une situation impossible : tout les pièces sont exactements similaire (en ignorant également le concept de bordure).
+Ceci est notre pire scénario !
+L'algorithme va donc tester toute les pièces à toutes les emplacement possible
+N = Taille du puzzle largeur/longueur
+N*N = Nombre de pièce
+En d'autres terme l'algorithme va parcourir N*N fois la première case puis (N*N)*(N*N) la seconde case etc etc
+Cela nous donne donc une complexité de O(N!)
+
+Maintenant le meilleur scénario : toutes les pièces sont uniques et une seul solution est possible
+Alors dans cette situation l'algorithme va être bien plus rapide :
+Il va parcourir N*N la première case N*N la seconde case (car seulement une seule piece valide à la première case) etc etc
+Nous donnant donc une complexite de O(N)
+
+Cela veux donc dire que la complexité va varier de O(N) à O(N!).
+Le facteur qui va décider de la complexité de l'algorithme est le nombre de couleur, plus celui ci sera élevé et plus les pièces seront uniques.
+En d'autre termes : moins nous avons de couleurs, plus de test sont nécéssaire à être effectuer pour verifier toutes les solutions et plus le code sera couteux/long à exécuter.
+
+Pour le code avec Rotation il faut quadruplé chaque itération ce qui donne une complexité variable entre O(4N) et O(4N!)
+
+\subsection{Explication détaillés (code sans Rotation)}
+
+Pour notre code, nous pouvons le diviser en 5 parties : 
+- définition d'une pièce \ref{code:tile}
+- creation des structures et initialisation \ref{code:init_board} 
+- test de pièce lors du backtrack \ref{code:test_tile} 
+- backtrack \ref{code:test_tile} 
+- affichage du résultat \ref{code:test_tile} 
+
+\lstinputlisting[inputpath=sources/, caption=Déclaration pièce  (\lstname), label=code:tile]{tile.ml} 
+
+Nous utilisons dans notre code 2 structures : board et tiles.
+Board est un tableau de tableau de pièce, il représente le plateau de jeu sur lequel on va venir placer les pièces pour essayer de résoudre le puzzle. 
+Tiles quant à lui est un tableau de pièce, il va servir à stocker la liste de pièce encore non placé sur le board.
+(à noter que si une pièce identifiant est égal à -1 alors on considère l'emplacement comme vide)
+
+L'initialisation du board ce fait avec un parcours de haut en bas et de gauche à droite/droite à gauche une ligne sur deux (afin de simuler un parcours en zigzag dans les algorithmes de backtrack optimal)
+Lors de la création d'un pièce nous avons donc besoin de vérifier seulement 3 paramètres : 
+- s'il est adjacent à une bordure (si c'est le cas le/les cotés adjacent prennent la valeur 0)
+- la valeur du coté inférieur de la pièce supérieur
+- la valeur du coté gauche de la pièce à droite (ou inverse pour un parcours de droite à gauche)
+- le reste des coté prendront une valeur aléatoire parmis celle disponible (défini au tout début du code pour une modification rapide)
+\lstinputlisting[inputpath=sources/, caption=Initialisation du board (\lstname), label=code:init_board]{init_board.ml} 
+
+Pour ce qui est du test des tuiles lors du backtrack voici le code et ce qui est testé
+\lstinputlisting[inputpath=sources/, caption=Test de compatibilité des pièces (fonction imbriqués)(\lstname), label=code:test_tile]{test_tile.ml} 
+
+Le backtrack la partie la plus important est également la partie la plus simple, le test s'occupant du principal tout ce qui reste à faire maintenant est de gérer les boucles de recherches et les appels récurssifs. 
+\lstinputlisting[inputpath=sources/, caption=Backtrack (fonction principale) (\lstname), label=code:backtrack]{backtrack.ml} 
+
+Enfin il ne nous reste plus que l'affichage qui est composé de plusieurs boucles imbriqués afin d'obtenir un affichage facilement lisible 
+\lstinputlisting[inputpath=sources/, caption=Affichage du résultat (board)(\lstname), label=code:print]{print.ml} 
+
+\subsection*{Explication détaillés (code avec Rotation)}
+
+L'algorithme avec rotation est très similaire cependant dans le backtrack \ref{code:backtrack} et dans le test de pièce \ref{code:test_tile} on rajoute un nouveau paramètre (que l'on nomme k) variant entre 0 et 3 afin de pouvoir tester chaque rotation et ainsi obtenir de nouvelle solution.
+
+\lstinputlisting[inputpath=sources/, caption=Paramètre k pour savoir le sens de rotation de la pièce (\lstname), label=code:rotation]{rotation.ml}
+
+Ainsi toutes les solutions possibles seront obtenus mais cela entraine 2 problème :
+La durée -> le code est bien plus long car bien plus de solution à tester
+Les solutions -> Le nombre de solution obtenus peux en réalité être divisé par 4 car nous trouvons des solutions "doublons" que l'on peut retrouver simplement en tournant le plateau de puzzle. Une solution possible à se problème serait de fixer un coin et de faire le backtrack à partir de ce moment la.
+
+\section{Résultats et analyses}
+
+\subsection{Temps}
+
+Voici les temps observé pour un code sans rotation :
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{img/TimeNR.png}
+  \caption{Temps sans rotation}
+  \label{img:timeNR}
+\end{figure}
+
+Comme on peux le constater la durée moyenne varie selon le nombre de couleur et la taille (logique). Cependant le temps varie de façon différente. Tandis que le temps se rallonge lorsque l'on augmente la taille, il diminue au contraire quand le nombre de couleur augmente. C'est logique car le nombre de cas à tester et de solution possible diminue lorsque le nombre de couleurs augmentent, si toute les pièces sont très atypiques alors il deviens plus dur de les substituer à l'inverse si les pièces se ressemblent (aka le nombre de couleur est faible) alors le programme va devoir tester bien plus de possibilité de résolution car les pièces vont s'imbriquer plus facilement les unes dans les autres.
+
+Voici les temps observé pour un code avec rotation :
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{img/TimeR.png}
+  \caption{Temps avec rotation}
+  \label{img:timeR}
+\end{figure}
+
+Nous observons ici le même phénomène qu'avec le code sans rotation cependant les temps sont bien plus car, contrairement au précédent code, chaque pièce doit être tester 4 fois (une dans chaque sens) rendant la recherche plus fastidieuse mais également en augmentant le nombre de solution possible ! 
+
+\subsection{Affichage}
+
+Afin de simplifier l'exploitation des fichiers de résultats après l'exécution de notre programme (comptage, suppression d'éventuels doublons, ou encore d'autres traitements à base de grep ou autre...), nous affichons systématiquement la balise <deb> au début de chaque grille et sautons une ligne vide une fois cette dernière terminée.
+
+Voici un exemple de puzzle de taille 5 par 5 avec 5 couleurs résolu
+par notre programme sans rotation :
+\lstinputlisting[inputpath=sources/, caption=Résultat sans Rotation (\lstname), label=resultat:resNR]{resNR_5x5.txt}
+
+Voici un exemple de puzzle de taille 5 par 5 avec 5 couleurs résolu
+par notre programme avec rotation :
+\ref{resultat:resR}
+Comme dis lors de l'explication, nous obtenons tous les résultats dans 4 rotations possibles donc il faut diviser par 4 le nombre de résultat obtenus pour avoir le nombre réel de solutions possibles (un code prennant en compte ce détail sera ajouter en annexe \ref{codeComplet:RotationTileLocked}
 
 
-\section*{Détails techniques}
-% Détails pertinents de l'implémentation
-% points durs, organisation,
-% structures de données
+\section{Conclusion}
 
+Finalement, et pour conclure, nous avons réussi à implémenter ce solveur. Nous pensons avoir compris en profondeur les subtilités algorithmique derrière ce dernier et leur importance, et ce, malgré les améliorations possibles au résultat de notre travail.
+Nous restons donc relativement satisfait de notre projet et remercions les profs de TP (Boris Bordeaux et Diarra Ibrahim) qui sont resté disponible pour répondre à toutes nos questions (notamment sur comment pour effectuer le parcours de façon optimal par exemple).
 
-\section*{Résultats et analyses}
+\section{Annexe}
 
-Voici un exemple de puzzle de taille 5 par 5 avec 3 couleurs résolu
-par notre programme :
+\lstinputlisting[inputpath=sources/, caption=Code sans Rotation (\lstname), label=codeComplet:NoRotation]{code.ml}
 
-\begin{verbnobox}\fontsize{7pt}{7pt}\selectfont
-  \VerbatimInput{demo_5_3.txt}
-\end{verbnobox}
+\lstinputlisting[inputpath=sources/, caption=Code avec Rotation (\lstname), label=codeComplet:Rotation]{codeRotation.ml}
 
+\lstinputlisting[inputpath=sources/, caption=Code avec Rotation et première tuile Locked (\lstname), label=codeComplet:RotationTileLocked]{codeRotation1stTileLocked.ml}
 
-
-
-
-
-
-
-\section*{Conclusion}
-% une conclusion qui établit (ou non) en justifiant le lien entre votre implé-
-% mentation et l’analyse théorique de l’algorithme
+\lstinputlisting[inputpath=sources/, caption=Résultat avec Rotation (\lstname), label=resultat:resR]{resR_5x5.txt}
 
 \end{document}

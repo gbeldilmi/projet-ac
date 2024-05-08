@@ -29,7 +29,7 @@ let init_board size =
             bottom = if i = size-1 then 0 else Random.int nbColor + 1;
             left = if j = 0 then 0 else board.(i).(j - 1).right;
             right = if j = size - 1 then 0 else Random.int nbColor + 1;
-            id = i*size+j;
+            id = i*size+j; 
           };
       done
     else 
@@ -134,7 +134,7 @@ let rec solve_backtrack board tiles i j =
           else 
             print_board board;
           tiles.(t) <- board.(i).(j);
-          board.(i).(j) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0 }; 
+          board.(i).(j) <- { id = -1; top = 0; right = 0; bottom = 0; left = 0}; 
         end
     done 
   else if i < size - 1 then 
